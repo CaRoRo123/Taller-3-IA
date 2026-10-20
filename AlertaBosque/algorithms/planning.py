@@ -25,7 +25,13 @@ def action_value(mdp, state, action, values):
       values[terminal] es cero.
     """
     # TODO: Add your code here
-    raise NotImplementedError("Complete este bloque TODO")
+    q = 0.0
+    gamma = mdp.discount
+    for successor, prob in mdp.transitions(state, action):
+        recompensa = mdp.reward(state, action, successor)
+        v_s_prima =values.get(successor, 0.0)  # Obtener el valor del sucesor, 0 si no existe
+        q += prob * (recompensa + gamma * v_s_prima)
+    return q
     # FIN DEL BLOQUE DEL ESTUDIANTE
 
 

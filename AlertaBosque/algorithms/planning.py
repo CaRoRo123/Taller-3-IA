@@ -60,7 +60,24 @@ def value_iteration(mdp, tolerance=1e-8, max_iterations=1000):
     history, deltas = [values.copy()], []
     for _ in range(max_iterations):
         # TODO: Add your code here
-        raise NotImplementedError("Complete este bloque TODO")
+        nuevos = {}
+        delta = 0.0
+        for state in mdp.states:
+            acciones = mdp.actions(state)
+            if not acciones:  # Estado terminal
+                nuevos[state] = 0.0
+            else:
+                # Encontrar el mejor valor de acción para el estado actual
+                mejor_valor = max(action_value(mdp, state, action, values) for action in acciones)
+                nuevos[state] = mejor_valor
+            
+            # Calcular el cambio absoluto
+            cambio = abs(nuevos[state] - values[state])
+            if cambio > delta:
+                delta = cambio
+        
+        converged = delta < tolerance
+        values = nuevos
         # FIN DEL BLOQUE DEL ESTUDIANTE
         # Copias para la animación y empaquetado del resultado.
         history.append(values.copy())

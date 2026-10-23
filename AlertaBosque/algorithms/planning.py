@@ -98,5 +98,23 @@ def extract_policy(mdp, values):
     - Respete mdp.actions: desempate N, E, S, W conservando el primero.
     """
     # TODO: Add your code here
-    raise NotImplementedError("Complete este bloque TODO")
+    policy = {}
+    for state in mdp.states:
+        # Si el estado es terminal o no tiene acciones legales, su política es None
+        acciones = mdp.actions(state)
+        if not acciones:
+            policy[state] = None
+        else:
+            best_action = None
+            max_q = float('-inf')
+            # Orden estricto de prioridad para el desempate: N, E, S, W
+            for action in ['N', 'E', 'S', 'W']:
+                if action in acciones:
+                    q = action_value(mdp, state, action, values)
+                    # Usamos estrictamente '>' para conservar la primera en caso de empate
+                    if q > max_q:
+                        max_q = q
+                        best_action = action
+            policy[state] = best_action
+    return policy
     # FIN DEL BLOQUE DEL ESTUDIANTE
